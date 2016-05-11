@@ -15,9 +15,7 @@ typedef struct
 {
     int ID, like_count, share_count;
     long views_count;
-    //char nome[30],text[30];
     char text[30], user[30], coordinates[30], language[30];
-    //float nota1, nota2, nota3;
 }grupo;
 
 grupo post;
@@ -227,7 +225,6 @@ void pesquisaChSecundaria()
 {
     int i, j, offset, comparador, ID;
     int k=0;
-    //float nota1, nota2, nota3, media;
     char pesquisa[30], carac, numstr[10];
 
     bubble2(vetIndiceSec, contIndiceSec);
@@ -265,42 +262,14 @@ void pesquisaChSecundaria()
                 k=1;
                 fseek(OUT, vetIndice[j].posicReg, 0);
                 printf("\n\nID: "); escritor();
-                printf("\nNome: "); escritor();
-                printf("\nSobreuser: "); escritor();
+                printf("\nUser: "); escritor();
+                printf("\nText: "); escritor();
+                printf("\nLinguagem: "); escritor();
+                printf("\nCoordenadas: "); escritor();
+                printf("\nLike: "); escritor();
+                printf("\nShare: "); escritor();
+                printf("\nView: "); escritor();
 
-               // //Escrita das notas e da media
-               // printf("\nNota 1: ");
-               // j=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
-               // while((carac != '#') && (carac != EOF))
-               // {
-               //     numstr[j] = carac; i++;
-               //     printf("%c", carac);
-               //     carac = fgetc(OUT);
-               // }
-               // nota1 = atof(numstr);
-
-               // printf("\nNota 2: ");
-               // j=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
-               // while((carac != '#') && (carac != EOF))
-               // {
-               //     numstr[j] = carac; i++;
-               //     printf("%c", carac);
-               //     carac = fgetc(OUT);
-               // }
-               // nota2 = atof(numstr);
-
-               // printf("\nNota 3: ");
-               // j=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
-               // while((carac != '#') && (carac != EOF))
-               // {
-               //     numstr[j] = carac; i++;
-               //     printf("%c", carac);
-               //     carac = fgetc(OUT);
-               // }
-               // nota3 = atof(numstr);
-
-               // media = ((nota1 + nota2 + nota3)/3);
-               // printf("\nMedia: %2.2f", media);
             }
 
             fread(&offset, sizeof(int), 1, LIST_INVERT);
@@ -324,7 +293,6 @@ void pesquisaChSecundaria()
 void pesquisaChPrimaria()
 {
     int pesquisa, i, offset;
-    //float nota1, nota2, nota3, media;
     char carac, numstr[10];
 
     bubble(vetIndice, contIndice);
@@ -347,42 +315,14 @@ void pesquisaChPrimaria()
     if(pesquisa == vetIndice[i].chaveID){
         fseek(OUT, vetIndice[i].posicReg, 0);
         printf("\n\nID: "); escritor();
-        printf("\nNome: "); escritor();
-        printf("\nSobreuser: "); escritor();
+        printf("\nUser: "); escritor();
+        printf("\nText: "); escritor();
+        printf("\nLinguagem: "); escritor();
+        printf("\nCoordenadas: "); escritor();
+        printf("\nLike: "); escritor();
+        printf("\nShare: "); escritor();
+        printf("\nView: "); escritor();
 
-        ////Escrita das notas e da media
-        //printf("\nNota 1: ");
-        //i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
-        //while((carac != '#') && (carac != EOF))
-        //{
-        //    numstr[i] = carac; i++;
-        //    printf("%c", carac);
-        //    carac = fgetc(OUT);
-        //}
-        //nota1 = atof(numstr);
-
-        //printf("\nNota 2: ");
-        //i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
-        //while((carac != '#') && (carac != EOF))
-        //{
-        //    numstr[i] = carac; i++;
-        //    printf("%c", carac);
-        //    carac = fgetc(OUT);
-        //}
-        //nota2 = atof(numstr);
-
-        //printf("\nNota 3: ");
-        //i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
-        //while((carac != '#') && (carac != EOF))
-        //{
-        //    numstr[i] = carac; i++;
-        //    printf("%c", carac);
-        //    carac = fgetc(OUT);
-        //}
-        //nota3 = atof(numstr);
-
-        //media = ((nota1 + nota2 + nota3)/3);
-        //printf("\nMedia: %2.2f", media);
     }
 
     getchar();
@@ -715,36 +655,14 @@ void alterar()
 
         posic1 = ftell(OUT) - 1;
         printf("\n\nID: "); escritor();
-        printf("\nNome: "); escritor();
-        printf("\nSobreuser: "); escritor();
+        printf("\nUser: "); escritor();
+        printf("\nText: "); escritor();
+        printf("\nLinguagem: "); escritor();
+        printf("\nCoordenadas: "); escritor();
+        printf("\nLike: "); escritor();
+        printf("\nShare: "); escritor();
+        printf("\nView: "); escritor();
 
-        ////Escrita das notas
-        //printf("\nNota 1: ");
-        //i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
-        //while((carac != '#') && (carac != EOF))
-        //{
-        //    numstr[i] = carac; i++;
-        //    printf("%c", carac);
-        //    carac = fgetc(OUT);
-        //}
-
-        //printf("\nNota 2: ");
-        //i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
-        //while((carac != '#') && (carac != EOF))
-        //{
-        //    numstr[i] = carac; i++;
-        //    printf("%c", carac);
-        //    carac = fgetc(OUT);
-        //}
-
-        //printf("\nNota 3: ");
-        //i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
-        //while((carac != '#') && (carac != EOF))
-        //{
-        //    numstr[i] = carac; i++;
-        //    printf("%c", carac);
-        //    carac = fgetc(OUT);
-        //}
     }
     posic2 = ftell(OUT);
     //--------------------
@@ -754,19 +672,23 @@ void alterar()
         printf("\nRefaca o procedimento.");
     } else {
         printf("\n\nReescreve todos os seguintes campos, efetuando as alteracoes que desejar:");
-        printf("\nNome: "); fgets(post.user, 30, stdin);
-        printf("Sobreuser: "); fgets(post.text, 30, stdin);
-        //printf("Nota 1: "); fgets(numstr, 10, stdin); post.nota1 = atof(numstr);
-        //printf("Nota 2: "); fgets(numstr, 10, stdin); post.nota2 = atof(numstr);
-        //printf("Nota 3: "); fgets(numstr, 10, stdin); post.nota3 = atof(numstr);
+        printf("\nUser: "); fgets(post.user, 30, stdin);
+        printf("\nText: "); fgets(post.text, 30, stdin);
+        printf("\nCoordenadas: "); fgets(post.coordinates, 30, stdin);
+        printf("\nLinguagem: "); fgets(post.language, 30, stdin);
+        printf("\n\nID: "); fgets(numstr, 10, stdin); post.like_count = atoi(numstr);
+        printf("\n\nID: "); fgets(numstr, 10, stdin); post.share_count = atoi(numstr);
+        printf("\n\nID: "); fgets(numstr, 10, stdin); post.views_count = atoi(numstr);
 
         //Calcular o tamanho do registro com os novos dados
         itoa(post.ID,numstr,10); tamanho = tamanho + strlen(numstr) + 1;
         tamanho = tamanho + strlen(post.user) + 1;
         tamanho = tamanho + strlen(post.text) + 1;
-        //sprintf(numstr, "%2.2f", post.nota1); tamanho = tamanho + strlen(numstr) + 1;
-        //sprintf(numstr, "%2.2f", post.nota2); tamanho = tamanho + strlen(numstr) + 1;
-        //sprintf(numstr, "%2.2f", post.nota3); tamanho = tamanho + strlen(numstr) + 1;
+        tamanho = tamanho + strlen(post.coordinates) + 1;
+        tamanho = tamanho + strlen(post.language) + 1;
+        itoa(post.like_count,numstr,10); tamanho + strlen(numstr) + 1;
+        itoa(post.share_count,numstr,10); tamanho + strlen(numstr) + 1;
+        itoa(post.views_count,numstr,10); tamanho + strlen(numstr) + 1;
 
         //Tentamos inserir. Se o novo registro for maior que o anterior, remover e inserir novamente
         fseek(OUT, -(posic2 - posic1), 1);
@@ -802,13 +724,11 @@ void alterar()
                 i++;
             }
             vetIndice[i].posicReg = ftell(OUT);
-            //fprintf(OUT, "%d#%s#%s#%2.2f#%2.2f#%2.2f#", post.ID, post.user, post.text, post.nota1, post.nota2, post.nota3);
             fprintf(OUT, "%d#%s#%s", post.ID, post.user, post.text);
             //--------------------
 
         } else {
             putc(tamRegistro2, OUT);
-            //fprintf(OUT, "%d#%s#%s#%2.2f#%2.2f#%2.2f#", post.ID, post.user, post.text, post.nota1, post.nota2, post.nota3);
             fprintf(OUT, "%d#%s#%s", post.ID, post.user, post.text);
             /*
                Neste caso, irá ocorrer problema de fragmentação interna.
@@ -842,32 +762,23 @@ void inserirAvancado()
 
     //Inserção dos dados na estrutura
     printf("\n\nID: "); fgets(numstr, 10, stdin); post.ID = atoi(numstr);
-    printf("Nome: "); fgets(post.user, 30, stdin);
-    printf("Sobreuser: "); fgets(post.text, 30, stdin);
-    //printf("\nDeseja inserir as notas? [S/N] ");
-    //simNao = getchar();
-    //simNao = toupper(simNao);
-    //getchar();
-
-    //if (simNao != 'S')
-    //{
-    //    post.nota1 = 0.0;
-    //    post.nota2 = 0.0;
-    //    post.nota3 = 0.0;
-    //} else {
-    //    printf("\nNota 1: "); fgets(numstr, 10, stdin); post.nota1 = atof(numstr);
-    //    printf("Nota 2: "); fgets(numstr, 10, stdin); post.nota2 = atof(numstr);
-    //    printf("Nota 3: "); fgets(numstr, 10, stdin); post.nota3 = atof(numstr);
-    //}
-    //--------------------
+    printf("User: "); fgets(post.user, 30, stdin);
+    printf("Text: "); fgets(post.text, 30, stdin);
+    printf("Coordenadas: "); fgets(post.coordinates, 30, stdin);
+    printf("\nLinguagem: "); fgets(post.language, 30, stdin);
+    printf("\n\nID: "); fgets(numstr, 10, stdin); post.like_count = atoi(numstr);
+    printf("\n\nID: "); fgets(numstr, 10, stdin); post.share_count = atoi(numstr);
+    printf("\n\nID: "); fgets(numstr, 10, stdin); post.views_count = atoi(numstr);
 
     //Verificar tamanho do novo registro
     itoa(post.ID,numstr,10); tamanho1 = tamanho1 + strlen(numstr) + 1;
     tamanho1 = tamanho1 + strlen(post.user) + 1;
     tamanho1 = tamanho1 + strlen(post.text) + 1;
-    //sprintf(numstr, "%2.2f", post.nota1); tamanho1 = tamanho1 + strlen(numstr) + 1;
-    //sprintf(numstr, "%2.2f", post.nota2); tamanho1 = tamanho1 + strlen(numstr) + 1;
-    //sprintf(numstr, "%2.2f", post.nota3); tamanho1 = tamanho1 + strlen(numstr) + 1;
+    tamanho1 = tamanho1 + strlen(post.coordinates) + 1;
+    tamanho1 = tamanho1 + strlen(post.language) + 1;
+    itoa(post.like_count,numstr,10); tamanho1 + strlen(numstr) + 1;
+    itoa(post.share_count,numstr,10); tamanho1 + strlen(numstr) + 1;
+    itoa(post.views_count,numstr,10); tamanho1 + strlen(numstr) + 1;
 
     //Inserção do novo Registro
     rewind(OUT);
@@ -921,7 +832,6 @@ void inserirAvancado()
         }
         //--------------------
 
-        //fprintf(OUT, "%d#%s#%s#%2.2f#%2.2f#%2.2f#", post.ID, post.user, post.text, post.nota1, post.nota2, post.nota3);
         fprintf(OUT, "%d#%s#%s", post.ID, post.user, post.text);
     } else {
         fseek(OUT, offset, 0);
@@ -984,7 +894,6 @@ void inserirAvancado()
             }
             //--------------------
 
-            //fprintf(OUT, "%d#%s#%s#%2.2f#%2.2f#%2.2f#", post.ID, post.user, post.text, post.nota1, post.nota2, post.nota3);
             fprintf(OUT, "%d#%s#%s", post.ID, post.user, post.text);
         } else {
             if (tamanho2 == tamanho1) {
@@ -1226,7 +1135,6 @@ void escritor()
 //Função de Pesquisa de posts
 void pesquisar()
 {
-    //float nota1, nota2, nota3, media;
     int pesquisaID1, pesquisaID2, tamRegistro, tamRegistro2, i;
     char carac, numstr[10];
 
@@ -1269,42 +1177,14 @@ void pesquisar()
         }
 
         printf("\n\nID: "); escritor();
-        printf("\nNome: "); escritor();
-        printf("\nSobreuser: "); escritor();
+        printf("\nUser: "); escritor();
+        printf("\nText: "); escritor();
+        printf("\nLinguagem: "); escritor();
+        printf("\nCoordenadas: "); escritor();
+        printf("\nLike: "); escritor();
+        printf("\nShare: "); escritor();
+        printf("\nView: "); escritor();
 
-        ////Escrita das notas e da media
-        //printf("\nNota 1: ");
-        //i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
-        //while((carac != '#') && (carac != EOF))
-        //{
-        //    numstr[i] = carac; i++;
-        //    printf("%c", carac);
-        //    carac = fgetc(OUT);
-        //}
-        //nota1 = atof(numstr);
-
-        //printf("\nNota 2: ");
-        //i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
-        //while((carac != '#') && (carac != EOF))
-        //{
-        //    numstr[i] = carac; i++;
-        //    printf("%c", carac);
-        //    carac = fgetc(OUT);
-        //}
-        //nota2 = atof(numstr);
-
-        //printf("\nNota 3: ");
-        //i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
-        //while((carac != '#') && (carac != EOF))
-        //{
-        //    numstr[i] = carac; i++;
-        //    printf("%c", carac);
-        //    carac = fgetc(OUT);
-        //}
-        //nota3 = atof(numstr);
-
-        //media = ((nota1 + nota2 + nota3)/3);
-        //printf("\nMedia: %2.2f", media);
 
     }
     //--------------------
@@ -1331,33 +1211,24 @@ void inserir()
 
     //Inserção dos dados na estrutura
     printf("\n\nID: "); fgets(numstr, 10, stdin); post.ID = atoi(numstr);
-    printf("Nome: "); fgets(post.user, 30, stdin);
-    printf("Sobreuser: "); fgets(post.text, 30, stdin);
-    //printf("\nDeseja inserir as notas? [S/N] ");
-    //simNao = getchar();
-    //simNao = toupper(simNao);
-    //getchar();
-
-    //if (simNao != 'S')
-    //{
-    //    post.nota1 = 0.0;
-    //    post.nota2 = 0.0;
-    //    post.nota3 = 0.0;
-    //} else {
-    //    printf("\nNota 1: "); fgets(numstr, 10, stdin); post.nota1 = atof(numstr);
-    //    printf("Nota 2: "); fgets(numstr, 10, stdin); post.nota2 = atof(numstr);
-    //    printf("Nota 3: "); fgets(numstr, 10, stdin); post.nota3 = atof(numstr);
-    //}
-    //--------------------
+    printf("User: "); fgets(post.user, 30, stdin);
+    printf("Text: "); fgets(post.text, 30, stdin);
+    printf("Coordenadas: "); fgets(post.coordinates, 30, stdin);
+    printf("Linguagem: "); fgets(post.language, 30, stdin);
+    printf("\n\nID: "); fgets(numstr, 10, stdin); post.like_count = atoi(numstr);
+    printf("\n\nID: "); fgets(numstr, 10, stdin); post.share_count = atoi(numstr);
+    printf("\n\nID: "); fgets(numstr, 10, stdin); post.views_count = atoi(numstr);
 
     //Gravação no arquivo
     fseek(OUT, 0, 2);
     itoa(post.ID,numstr,10); tamanho = tamanho + strlen(numstr) + 1;
     tamanho = tamanho + strlen(post.user) + 1;
     tamanho = tamanho + strlen(post.text) + 1;
-    //sprintf(numstr, "%2.2f", post.nota1); tamanho = tamanho + strlen(numstr) + 1;
-    //sprintf(numstr, "%2.2f", post.nota2); tamanho = tamanho + strlen(numstr) + 1;
-    //sprintf(numstr, "%2.2f", post.nota3); tamanho = tamanho + strlen(numstr) + 1;
+    tamanho = tamanho + strlen(post.coordinates) + 1;
+    tamanho = tamanho + strlen(post.language) + 1;
+    itoa(post.like_count,numstr,10); tamanho + strlen(numstr) + 1;
+    itoa(post.share_count,numstr,10); tamanho + strlen(numstr) + 1;
+    itoa(post.views_count,numstr,10); tamanho + strlen(numstr) + 1;
     putc(tamanho, OUT);
     //salvando registro no arquivo de indice primario
     vetIndice[contIndice].chaveID = post.ID;
@@ -1405,7 +1276,6 @@ void inserir()
     //--------------------
 
 
-    //fprintf(OUT, "%d#%s#%s#%2.2f#%2.2f#%2.2f#", post.ID, post.user, post.text, post.nota1, post.nota2, post.nota3);
     fprintf(OUT, "%d#%s#%s", post.ID, post.user, post.text);
     //-------------------
 
@@ -1425,7 +1295,6 @@ void menu()
 
     do {
         system("clear");
-        printf("          Gerenciamento da Disciplina          ");
         printf("\n\n1. Inserir post (Modo Simples)");
         printf("\n2. Inserir post (Modo Avancado)");
         printf("\n3. Alterar dados post");
