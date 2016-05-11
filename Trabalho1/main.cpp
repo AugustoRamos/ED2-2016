@@ -237,7 +237,7 @@ void pesquisaChSecundaria()
     printf("          Gerenciamento da Disciplina          ");
     printf("\n         Pesquisa (chave secundaria)                   ");
 
-    printf("\n\nInsira o nome para pesquisa: "); gets(pesquisa);
+    printf("\n\nInsira o nome para pesquisa: "); fgets(pesquisa, 30, stdin);
 
     for(i = 0; i < contIndiceSec +1; i++){
         comparador = strcmp(pesquisa, vetIndiceSec[i].nomeSec);
@@ -682,7 +682,7 @@ void alterar()
     printf("          Gerenciamento da Disciplina          ");
     printf("\n                   Alteracao                ");
 
-    printf("\n\nInsira o RA para alteracao: "); gets(numstr); alteraRA1 = atoi(numstr);
+    printf("\n\nInsira o RA para alteracao: "); fgets(numstr, 10, stdin); alteraRA1 = atoi(numstr);
     aluno.RA = alteraRA1;
 
     //Pesquisa do RA
@@ -758,11 +758,11 @@ void alterar()
         printf("\nRefaca o procedimento.");
     } else {
         printf("\n\nReescreve todos os seguintes campos, efetuando as alteracoes que desejar:");
-        printf("\nNome: "); gets(aluno.nome);
-        printf("Sobrenome: "); gets(aluno.sobrenome);
-        printf("Nota 1: "); gets(numstr); aluno.nota1 = atof(numstr);
-        printf("Nota 2: "); gets(numstr); aluno.nota2 = atof(numstr);
-        printf("Nota 3: "); gets(numstr); aluno.nota3 = atof(numstr);
+        printf("\nNome: "); fgets(aluno.nome, 30, stdin);
+        printf("Sobrenome: "); fgets(aluno.sobrenome, 30, stdin);
+        printf("Nota 1: "); fgets(numstr, 10, stdin); aluno.nota1 = atof(numstr);
+        printf("Nota 2: "); fgets(numstr, 10, stdin); aluno.nota2 = atof(numstr);
+        printf("Nota 3: "); fgets(numstr, 10, stdin); aluno.nota3 = atof(numstr);
 
         //Calcular o tamanho do registro com os novos dados
         itoa(aluno.RA,numstr,10); tamanho = tamanho + strlen(numstr) + 1;
@@ -844,9 +844,9 @@ void inserirAvancado()
 
 
     //Inserção dos dados na estrutura
-    printf("\n\nRA: "); gets(numstr); aluno.RA = atoi(numstr);
-    printf("Nome: "); gets(aluno.nome);
-    printf("Sobrenome: "); gets(aluno.sobrenome);
+    printf("\n\nRA: "); fgets(numstr, 10, stdin); aluno.RA = atoi(numstr);
+    printf("Nome: "); fgets(aluno.nome, 30, stdin);
+    printf("Sobrenome: "); fgets(aluno.sobrenome, 30, stdin);
     printf("\nDeseja inserir as notas? [S/N] ");
     simNao = getchar();
     simNao = toupper(simNao);
@@ -858,9 +858,9 @@ void inserirAvancado()
         aluno.nota2 = 0.0;
         aluno.nota3 = 0.0;
     } else {
-        printf("\nNota 1: "); gets(numstr); aluno.nota1 = atof(numstr);
-        printf("Nota 2: "); gets(numstr); aluno.nota2 = atof(numstr);
-        printf("Nota 3: "); gets(numstr); aluno.nota3 = atof(numstr);
+        printf("\nNota 1: "); fgets(numstr, 10, stdin); aluno.nota1 = atof(numstr);
+        printf("Nota 2: "); fgets(numstr, 10, stdin); aluno.nota2 = atof(numstr);
+        printf("Nota 3: "); fgets(numstr, 10, stdin); aluno.nota3 = atof(numstr);
     }
     //--------------------
 
@@ -1132,7 +1132,7 @@ void remover()
     printf("          Gerenciamento da Disciplina          ");
     printf("\n                    Remocao                   ");
 
-    printf("\n\nInsira o RA para remocao: "); gets(numstr); removaRA1 = atoi(numstr);
+    printf("\n\nInsira o RA para remocao: "); fgets(numstr, 10, stdin); removaRA1 = atoi(numstr);
 
     //Pesquisa do RA para ser removido
     fseek(OUT, 5, 0);
@@ -1236,7 +1236,7 @@ void pesquisar()
     printf("          Gerenciamento da Disciplina          ");
     printf("\n                    Pesquisa                   ");
 
-    printf("\n\nInsira o RA para pesquisa: "); gets(numstr); pesquisaRA1 = atoi(numstr);
+    printf("\n\nInsira o RA para pesquisa: "); fgets(numstr, 10, stdin); pesquisaRA1 = atoi(numstr);
 
     //Pesquisa do RA
     fseek(OUT, 5, 0);
@@ -1332,9 +1332,9 @@ void inserir()
 
 
     //Inserção dos dados na estrutura
-    printf("\n\nRA: "); gets(numstr); aluno.RA = atoi(numstr);
-    printf("Nome: "); gets(aluno.nome);
-    printf("Sobrenome: "); gets(aluno.sobrenome);
+    printf("\n\nRA: "); fgets(numstr, 10, stdin); aluno.RA = atoi(numstr);
+    printf("Nome: "); fgets(aluno.nome, 30, stdin);
+    printf("Sobrenome: "); fgets(aluno.sobrenome, 30, stdin);
     printf("\nDeseja inserir as notas? [S/N] ");
     simNao = getchar();
     simNao = toupper(simNao);
@@ -1346,9 +1346,9 @@ void inserir()
         aluno.nota2 = 0.0;
         aluno.nota3 = 0.0;
     } else {
-        printf("\nNota 1: "); gets(numstr); aluno.nota1 = atof(numstr);
-        printf("Nota 2: "); gets(numstr); aluno.nota2 = atof(numstr);
-        printf("Nota 3: "); gets(numstr); aluno.nota3 = atof(numstr);
+        printf("\nNota 1: "); fgets(numstr, 10, stdin); aluno.nota1 = atof(numstr);
+        printf("Nota 2: "); fgets(numstr, 10, stdin); aluno.nota2 = atof(numstr);
+        printf("Nota 3: "); fgets(numstr, 10, stdin); aluno.nota3 = atof(numstr);
     }
     //--------------------
 
