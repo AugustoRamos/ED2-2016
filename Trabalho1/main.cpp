@@ -63,7 +63,6 @@ void bubble2(vetSec v[], int qtd);
 void bubble(vet v[], int qtd);
 void refazerIndiceSecundario();
 void refazerIndice();
-void compactar();
 void alterar();
 void inseriravancado();
 void remover();
@@ -547,63 +546,6 @@ void refazerIndice()
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-////////////////////////////////////////////////////////////////////////////////
-//Função para compactar o arquivo
-void compactar()
-{
-    int inicial, tamanho;
-    char carac, copiador[100];
-
-    //abrir arquivo auxiliar
-    FILE *auxiliar = fopen("auxiliar.dad", "w+b");
-    inicial = -1;
-    fwrite(&inicial, sizeof(int), 1, auxiliar); fprintf(auxiliar, "#");
-    //--------------------
-
-    system("clear");
-    fseek(OUT, 5, 0);
-    tamanho = getc(OUT);
-    carac = getc(OUT);
-
-    while(carac != EOF)
-    {
-        if ((tamanho < 6) || (carac == '*')) {
-            fseek(OUT, (tamanho-1), 1);
-            tamanho = getc(OUT);
-            carac = getc(OUT);
-        } else {
-            fseek(OUT, -2, 1);
-            fread(&copiador, tamanho+1, 1, OUT);
-            fwrite(&copiador, tamanho+1, 1, auxiliar);
-            tamanho = getc(OUT);
-            carac = getc(OUT);
-        }
-    }
-
-    fclose(OUT);
-    fclose(auxiliar);
-    remove("projeto.dad");
-    inicial = rename("auxiliar.dad", "projeto.dad");
-    OUT = fopen("projeto.dad", "r+b");
-
-    printf("\n\nCompactacao efetuada com sucesso.");
-
-    memset(vetIndice, '\0', sizeof(vetIndice)); //Reorganizando o indice primario
-    contIndice = 0;
-    refazerIndice();
-
-    getchar();
-}
-////////////////////////////////////////////////////////////////////////////////
-
-
-
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //Função para alteração dos dados
@@ -1325,12 +1267,9 @@ void menu()
                 pesquisar();
                 break;
             case '6':
-                compactar();
-                break;
-            case '7':
                 pesquisaChPrimaria();
                 break;
-            case '8':
+            case '7':
                 pesquisaChSecundaria();
                 break;
             case '0':
