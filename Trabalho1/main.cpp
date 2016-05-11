@@ -13,18 +13,20 @@
 //Declaração das Structs e outras variaveis globais
 typedef struct
 {
-    int RA;
-    char nome[30],sobrenome[30];
-    float nota1,nota2,nota3;
+    int ID, like_count, share_count;
+    long views_count;
+    //char nome[30],text[30];
+    char text[30], user[30], coordinates[30], language[30];
+    //float nota1, nota2, nota3;
 }grupo;
 
-grupo aluno;
+grupo post;
 
 
 
 typedef struct
 {
-    char nomeSec[30];
+    char userSec[30];
     int posicSec;
 }vetSec;
 
@@ -34,7 +36,7 @@ vetSec vetIndiceSec[1000];
 
 typedef struct
 {
-    int chaveRA;
+    int chaveID;
     int posicReg;
 }vet;
 
@@ -71,10 +73,6 @@ void escritor();
 void pesquisar();
 void inserir();
 void menu();
-
-
-
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //Programa Principal
@@ -127,7 +125,7 @@ int main()
         fread(&cont1, sizeof(int), 1, INDICE);
         while(cont != 0)
         {
-            vetIndice[contIndice].chaveRA = cont;
+            vetIndice[contIndice].chaveID = cont;
             vetIndice[contIndice].posicReg = cont1;
             contIndice++;
             fread(&cont, sizeof(int), 1, INDICE);
@@ -154,7 +152,7 @@ int main()
         comparar = strcmp(auxNome, "fim");
         while (fim != '.')
         {
-            strcpy(vetIndiceSec[contIndiceSec].nomeSec, auxNome);
+            strcpy(vetIndiceSec[contIndiceSec].userSec, auxNome);
             vetIndiceSec[contIndiceSec].posicSec = cont;
             contIndiceSec++;
             fim = getc(INDICE_SEC);
@@ -183,8 +181,8 @@ int main()
     inicial = 1; //1 = indice atualizado
     fwrite(&inicial, sizeof(int), 1, INDICE); fprintf(INDICE,"#");
     for(int i = 0; i < contIndice + 1; i++) {
-        if(vetIndice[i].chaveRA != 0) {
-            fwrite(&vetIndice[i].chaveRA, sizeof(int), 1, INDICE);
+        if(vetIndice[i].chaveID != 0) {
+            fwrite(&vetIndice[i].chaveID, sizeof(int), 1, INDICE);
         }
         if(vetIndice[i].posicReg != 0) {
             fwrite(&vetIndice[i].posicReg, sizeof(int), 1, INDICE);
@@ -203,7 +201,7 @@ int main()
     inicial = 1; //1 = indice atualizado
     fwrite(&inicial, sizeof(int), 1, INDICE_SEC); fprintf(INDICE_SEC, "#");
     for(int i = 0; i < contIndiceSec; i++) {
-        fwrite(&vetIndiceSec[i].nomeSec, sizeof(vetIndiceSec[i].nomeSec), 1, INDICE_SEC);
+        fwrite(&vetIndiceSec[i].userSec, sizeof(vetIndiceSec[i].userSec), 1, INDICE_SEC);
         fwrite(&vetIndiceSec[i].posicSec, sizeof(int), 1, INDICE_SEC);
     }
     fim = '.';
@@ -227,20 +225,19 @@ int main()
 //Função de pesquisa em chave secundaria
 void pesquisaChSecundaria()
 {
-    int i, j, offset, comparador, RA;
+    int i, j, offset, comparador, ID;
     int k=0;
-    float nota1, nota2, nota3, media;
+    //float nota1, nota2, nota3, media;
     char pesquisa[30], carac, numstr[10];
 
     bubble2(vetIndiceSec, contIndiceSec);
     system("clear");
-    printf("          Gerenciamento da Disciplina          ");
     printf("\n         Pesquisa (chave secundaria)                   ");
 
-    printf("\n\nInsira o nome para pesquisa: "); gets(pesquisa);
+    printf("\n\nInsira o usuario para pesquisa: "); fgets(pesquisa, 30, stdin);
 
     for(i = 0; i < contIndiceSec +1; i++){
-        comparador = strcmp(pesquisa, vetIndiceSec[i].nomeSec);
+        comparador = strcmp(pesquisa, vetIndiceSec[i].userSec);
         if(comparador == 0) {
             break;
         }
@@ -255,55 +252,55 @@ void pesquisaChSecundaria()
         do
         {
             fseek(LIST_INVERT, offset, 0);
-            fread(&RA, sizeof(int), 1, LIST_INVERT);
+            fread(&ID, sizeof(int), 1, LIST_INVERT);
 
             for(j = 0; j < contIndice+1; j++){
-                if(RA == vetIndice[j].chaveRA){
+                if(ID == vetIndice[j].chaveID){
                     break;
                 }
             }
 
             //Escrita do Registro na tela
-            if(RA == vetIndice[j].chaveRA){
+            if(ID == vetIndice[j].chaveID){
                 k=1;
                 fseek(OUT, vetIndice[j].posicReg, 0);
-                printf("\n\nRA: "); escritor();
+                printf("\n\nID: "); escritor();
                 printf("\nNome: "); escritor();
-                printf("\nSobrenome: "); escritor();
+                printf("\nSobreuser: "); escritor();
 
-                //Escrita das notas e da media
-                printf("\nNota 1: ");
-                j=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
-                while((carac != '#') && (carac != EOF))
-                {
-                    numstr[j] = carac; i++;
-                    printf("%c", carac);
-                    carac = fgetc(OUT);
-                }
-                nota1 = atof(numstr);
+               // //Escrita das notas e da media
+               // printf("\nNota 1: ");
+               // j=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
+               // while((carac != '#') && (carac != EOF))
+               // {
+               //     numstr[j] = carac; i++;
+               //     printf("%c", carac);
+               //     carac = fgetc(OUT);
+               // }
+               // nota1 = atof(numstr);
 
-                printf("\nNota 2: ");
-                j=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
-                while((carac != '#') && (carac != EOF))
-                {
-                    numstr[j] = carac; i++;
-                    printf("%c", carac);
-                    carac = fgetc(OUT);
-                }
-                nota2 = atof(numstr);
+               // printf("\nNota 2: ");
+               // j=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
+               // while((carac != '#') && (carac != EOF))
+               // {
+               //     numstr[j] = carac; i++;
+               //     printf("%c", carac);
+               //     carac = fgetc(OUT);
+               // }
+               // nota2 = atof(numstr);
 
-                printf("\nNota 3: ");
-                j=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
-                while((carac != '#') && (carac != EOF))
-                {
-                    numstr[j] = carac; i++;
-                    printf("%c", carac);
-                    carac = fgetc(OUT);
-                }
-                nota3 = atof(numstr);
+               // printf("\nNota 3: ");
+               // j=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
+               // while((carac != '#') && (carac != EOF))
+               // {
+               //     numstr[j] = carac; i++;
+               //     printf("%c", carac);
+               //     carac = fgetc(OUT);
+               // }
+               // nota3 = atof(numstr);
 
-                media = ((nota1 + nota2 + nota3)/3);
-                printf("\nMedia: %2.2f", media);
+               // media = ((nota1 + nota2 + nota3)/3);
+               // printf("\nMedia: %2.2f", media);
             }
 
             fread(&offset, sizeof(int), 1, LIST_INVERT);
@@ -327,18 +324,17 @@ void pesquisaChSecundaria()
 void pesquisaChPrimaria()
 {
     int pesquisa, i, offset;
-    float nota1, nota2, nota3, media;
+    //float nota1, nota2, nota3, media;
     char carac, numstr[10];
 
     bubble(vetIndice, contIndice);
     system("clear");
-    printf("          Gerenciamento da Disciplina          ");
     printf("\n           Pesquisa (chave primaria)                   ");
 
-    printf("\n\nInsira o RA para pesquisa: "); scanf("%d", &pesquisa);
+    printf("\n\nInsira o ID para pesquisa: "); scanf("%d", &pesquisa);
 
     for(i = 0; i < contIndice+1; i++){
-        if(pesquisa == vetIndice[i].chaveRA){
+        if(pesquisa == vetIndice[i].chaveID){
             break;
         }
     }
@@ -348,45 +344,45 @@ void pesquisaChPrimaria()
     }
 
     //Escrita do Registro na tela
-    if(pesquisa == vetIndice[i].chaveRA){
+    if(pesquisa == vetIndice[i].chaveID){
         fseek(OUT, vetIndice[i].posicReg, 0);
-        printf("\n\nRA: "); escritor();
+        printf("\n\nID: "); escritor();
         printf("\nNome: "); escritor();
-        printf("\nSobrenome: "); escritor();
+        printf("\nSobreuser: "); escritor();
 
-        //Escrita das notas e da media
-        printf("\nNota 1: ");
-        i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
-        while((carac != '#') && (carac != EOF))
-        {
-            numstr[i] = carac; i++;
-            printf("%c", carac);
-            carac = fgetc(OUT);
-        }
-        nota1 = atof(numstr);
+        ////Escrita das notas e da media
+        //printf("\nNota 1: ");
+        //i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
+        //while((carac != '#') && (carac != EOF))
+        //{
+        //    numstr[i] = carac; i++;
+        //    printf("%c", carac);
+        //    carac = fgetc(OUT);
+        //}
+        //nota1 = atof(numstr);
 
-        printf("\nNota 2: ");
-        i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
-        while((carac != '#') && (carac != EOF))
-        {
-            numstr[i] = carac; i++;
-            printf("%c", carac);
-            carac = fgetc(OUT);
-        }
-        nota2 = atof(numstr);
+        //printf("\nNota 2: ");
+        //i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
+        //while((carac != '#') && (carac != EOF))
+        //{
+        //    numstr[i] = carac; i++;
+        //    printf("%c", carac);
+        //    carac = fgetc(OUT);
+        //}
+        //nota2 = atof(numstr);
 
-        printf("\nNota 3: ");
-        i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
-        while((carac != '#') && (carac != EOF))
-        {
-            numstr[i] = carac; i++;
-            printf("%c", carac);
-            carac = fgetc(OUT);
-        }
-        nota3 = atof(numstr);
+        //printf("\nNota 3: ");
+        //i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
+        //while((carac != '#') && (carac != EOF))
+        //{
+        //    numstr[i] = carac; i++;
+        //    printf("%c", carac);
+        //    carac = fgetc(OUT);
+        //}
+        //nota3 = atof(numstr);
 
-        media = ((nota1 + nota2 + nota3)/3);
-        printf("\nMedia: %2.2f", media);
+        //media = ((nota1 + nota2 + nota3)/3);
+        //printf("\nMedia: %2.2f", media);
     }
 
     getchar();
@@ -426,7 +422,7 @@ void bubble(vet v[], int qtd)
         trocou = 0;
 
         for(i = 0; i < qtd; i++)
-            if(v[i].chaveRA > v[i + 1].chaveRA)
+            if(v[i].chaveID > v[i + 1].chaveID)
             {
                 swapbubble(v, i);
                 trocou = 1;
@@ -456,7 +452,7 @@ void bubble2(vetSec v[], int qtd)
         trocou = 0;
 
         for(i = 0; i < qtd; i++) {
-            comp = strcmp(v[i].nomeSec, v[i + 1].nomeSec);
+            comp = strcmp(v[i].userSec, v[i + 1].userSec);
             if(comp > 0)
             {
                 swapbubble2(v, i);
@@ -477,7 +473,7 @@ void bubble2(vetSec v[], int qtd)
 //Função para refazer o indice secundário.
 void refazerIndiceSecundario()
 {
-    int tam, i, j, offset, offset2, RA, comparador, valor;
+    int tam, i, j, offset, offset2, ID, comparador, valor;
     char carac, numstr[10], auxStr[30];
 
     fclose(LIST_INVERT);
@@ -501,7 +497,7 @@ void refazerIndiceSecundario()
                 i++;
                 carac = getc(OUT);
             }
-            RA = atoi(numstr); //armazeno o RA que será colocado na lista invertida
+            ID = atoi(numstr); //armazeno o ID que será colocado na lista invertida
             j = i;
 
             i=0;
@@ -515,7 +511,7 @@ void refazerIndiceSecundario()
             j = j + i;
 
             for(int k = 0; k < contIndiceSec + 1; k++) { //verifico se a chave já existe
-                comparador = strcmp(auxStr, vetIndiceSec[k].nomeSec);
+                comparador = strcmp(auxStr, vetIndiceSec[k].userSec);
                 if (comparador == 0) {
                     offset = vetIndiceSec[k].posicSec;
                     break;
@@ -525,7 +521,7 @@ void refazerIndiceSecundario()
             if (comparador == 0) {
                 fseek(LIST_INVERT, 0, 2);
                 offset2 = ftell(LIST_INVERT);
-                fwrite(&RA, sizeof(int), 1, LIST_INVERT);
+                fwrite(&ID, sizeof(int), 1, LIST_INVERT);
                 valor = -1;
                 fwrite(&valor, sizeof(int), 1, LIST_INVERT);
 
@@ -543,10 +539,10 @@ void refazerIndiceSecundario()
             } else {
                 fseek(LIST_INVERT, 0, 2);
                 offset2 = ftell(LIST_INVERT);
-                fwrite(&RA, sizeof(int), 1, LIST_INVERT);
+                fwrite(&ID, sizeof(int), 1, LIST_INVERT);
                 valor = -1;
                 fwrite(&valor, sizeof(int), 1, LIST_INVERT);
-                strcpy(vetIndiceSec[contIndiceSec].nomeSec, auxStr);
+                strcpy(vetIndiceSec[contIndiceSec].userSec, auxStr);
                 vetIndiceSec[contIndiceSec].posicSec = offset2;
                 contIndiceSec++;
             }
@@ -598,7 +594,7 @@ void refazerIndice()
                 carac = getc(OUT);
             }
 
-            vetIndice[contIndice].chaveRA = atoi(numstr);
+            vetIndice[contIndice].chaveID = atoi(numstr);
             vetIndice[contIndice].posicReg = offset;
             contIndice ++;
         }
@@ -673,7 +669,7 @@ void compactar()
 //Função para alteração dos dados
 void alterar()
 {
-    int alteraRA1, alteraRA2, tamRegistro, tamRegistro2, tamanho, i, offset, offset2, posic1, posic2;
+    int alteraID1, alteraID2, tamRegistro, tamRegistro2, tamanho, i, offset, offset2, posic1, posic2;
     char carac, numstr[10];
 
     tamanho = 0;
@@ -682,14 +678,14 @@ void alterar()
     printf("          Gerenciamento da Disciplina          ");
     printf("\n                   Alteracao                ");
 
-    printf("\n\nInsira o RA para alteracao: "); gets(numstr); alteraRA1 = atoi(numstr);
-    aluno.RA = alteraRA1;
+    printf("\n\nInsira o ID para alteracao: "); fgets(numstr, 10, stdin); alteraID1 = atoi(numstr);
+    post.ID = alteraID1;
 
-    //Pesquisa do RA
+    //Pesquisa do ID
     fseek(OUT, 5, 0);
-    alteraRA2 = 0;
+    alteraID2 = 0;
     tamRegistro = getc(OUT);
-    while((alteraRA1 != alteraRA2) && (tamRegistro != EOF))
+    while((alteraID1 != alteraID2) && (tamRegistro != EOF))
     {
         memset(numstr, '\0', sizeof(numstr));
         tamRegistro2 = tamRegistro;
@@ -701,76 +697,76 @@ void alterar()
             i++;
             carac = getc(OUT);
         }
-        alteraRA2 = atoi(numstr);
+        alteraID2 = atoi(numstr);
         fseek(OUT, (tamRegistro-(i+1)), 1);
         tamRegistro = getc(OUT);
     }
     //--------------------
 
     //Escrita referente aos dados obtidos
-    if ((alteraRA1 != alteraRA2) && (tamRegistro == -1)) {
-        printf("\nRA inexistente.");
+    if ((alteraID1 != alteraID2) && (tamRegistro == -1)) {
+        printf("\nID inexistente.");
     } else {
-        if ((alteraRA1 == alteraRA2) && (tamRegistro == -1)) {
+        if ((alteraID1 == alteraID2) && (tamRegistro == -1)) {
             fseek(OUT, -(tamRegistro2), 1);
         } else {
             fseek(OUT, -(tamRegistro2+1), 1);
         }
 
         posic1 = ftell(OUT) - 1;
-        printf("\n\nRA: "); escritor();
+        printf("\n\nID: "); escritor();
         printf("\nNome: "); escritor();
-        printf("\nSobrenome: "); escritor();
+        printf("\nSobreuser: "); escritor();
 
-        //Escrita das notas
-        printf("\nNota 1: ");
-        i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
-        while((carac != '#') && (carac != EOF))
-        {
-            numstr[i] = carac; i++;
-            printf("%c", carac);
-            carac = fgetc(OUT);
-        }
+        ////Escrita das notas
+        //printf("\nNota 1: ");
+        //i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
+        //while((carac != '#') && (carac != EOF))
+        //{
+        //    numstr[i] = carac; i++;
+        //    printf("%c", carac);
+        //    carac = fgetc(OUT);
+        //}
 
-        printf("\nNota 2: ");
-        i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
-        while((carac != '#') && (carac != EOF))
-        {
-            numstr[i] = carac; i++;
-            printf("%c", carac);
-            carac = fgetc(OUT);
-        }
+        //printf("\nNota 2: ");
+        //i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
+        //while((carac != '#') && (carac != EOF))
+        //{
+        //    numstr[i] = carac; i++;
+        //    printf("%c", carac);
+        //    carac = fgetc(OUT);
+        //}
 
-        printf("\nNota 3: ");
-        i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
-        while((carac != '#') && (carac != EOF))
-        {
-            numstr[i] = carac; i++;
-            printf("%c", carac);
-            carac = fgetc(OUT);
-        }
+        //printf("\nNota 3: ");
+        //i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
+        //while((carac != '#') && (carac != EOF))
+        //{
+        //    numstr[i] = carac; i++;
+        //    printf("%c", carac);
+        //    carac = fgetc(OUT);
+        //}
     }
     posic2 = ftell(OUT);
     //--------------------
 
     //Se existir registro, solicitar novos dados
-    if ((alteraRA1 != alteraRA2) && (tamRegistro == -1)) {
+    if ((alteraID1 != alteraID2) && (tamRegistro == -1)) {
         printf("\nRefaca o procedimento.");
     } else {
         printf("\n\nReescreve todos os seguintes campos, efetuando as alteracoes que desejar:");
-        printf("\nNome: "); gets(aluno.nome);
-        printf("Sobrenome: "); gets(aluno.sobrenome);
-        printf("Nota 1: "); gets(numstr); aluno.nota1 = atof(numstr);
-        printf("Nota 2: "); gets(numstr); aluno.nota2 = atof(numstr);
-        printf("Nota 3: "); gets(numstr); aluno.nota3 = atof(numstr);
+        printf("\nNome: "); fgets(post.user, 30, stdin);
+        printf("Sobreuser: "); fgets(post.text, 30, stdin);
+        //printf("Nota 1: "); fgets(numstr, 10, stdin); post.nota1 = atof(numstr);
+        //printf("Nota 2: "); fgets(numstr, 10, stdin); post.nota2 = atof(numstr);
+        //printf("Nota 3: "); fgets(numstr, 10, stdin); post.nota3 = atof(numstr);
 
         //Calcular o tamanho do registro com os novos dados
-        itoa(aluno.RA,numstr,10); tamanho = tamanho + strlen(numstr) + 1;
-        tamanho = tamanho + strlen(aluno.nome) + 1;
-        tamanho = tamanho + strlen(aluno.sobrenome) + 1;
-        sprintf(numstr, "%2.2f", aluno.nota1); tamanho = tamanho + strlen(numstr) + 1;
-        sprintf(numstr, "%2.2f", aluno.nota2); tamanho = tamanho + strlen(numstr) + 1;
-        sprintf(numstr, "%2.2f", aluno.nota3); tamanho = tamanho + strlen(numstr) + 1;
+        itoa(post.ID,numstr,10); tamanho = tamanho + strlen(numstr) + 1;
+        tamanho = tamanho + strlen(post.user) + 1;
+        tamanho = tamanho + strlen(post.text) + 1;
+        //sprintf(numstr, "%2.2f", post.nota1); tamanho = tamanho + strlen(numstr) + 1;
+        //sprintf(numstr, "%2.2f", post.nota2); tamanho = tamanho + strlen(numstr) + 1;
+        //sprintf(numstr, "%2.2f", post.nota3); tamanho = tamanho + strlen(numstr) + 1;
 
         //Tentamos inserir. Se o novo registro for maior que o anterior, remover e inserir novamente
         fseek(OUT, -(posic2 - posic1), 1);
@@ -801,17 +797,19 @@ void alterar()
             putc(tamanho, OUT);
             //alterar registro no arquivo de indice primario
             i = 0;
-            while(alteraRA1 != vetIndice[i].chaveRA)
+            while(alteraID1 != vetIndice[i].chaveID)
             {
                 i++;
             }
             vetIndice[i].posicReg = ftell(OUT);
-            fprintf(OUT, "%d#%s#%s#%2.2f#%2.2f#%2.2f#", aluno.RA, aluno.nome, aluno.sobrenome, aluno.nota1, aluno.nota2, aluno.nota3);
+            //fprintf(OUT, "%d#%s#%s#%2.2f#%2.2f#%2.2f#", post.ID, post.user, post.text, post.nota1, post.nota2, post.nota3);
+            fprintf(OUT, "%d#%s#%s", post.ID, post.user, post.text);
             //--------------------
 
         } else {
             putc(tamRegistro2, OUT);
-            fprintf(OUT, "%d#%s#%s#%2.2f#%2.2f#%2.2f#", aluno.RA, aluno.nome, aluno.sobrenome, aluno.nota1, aluno.nota2, aluno.nota3);
+            //fprintf(OUT, "%d#%s#%s#%2.2f#%2.2f#%2.2f#", post.ID, post.user, post.text, post.nota1, post.nota2, post.nota3);
+            fprintf(OUT, "%d#%s#%s", post.ID, post.user, post.text);
             /*
                Neste caso, irá ocorrer problema de fragmentação interna.
                A fragmentação interna não será retirada pela compactação.
@@ -832,45 +830,44 @@ void alterar()
 
 
 ////////////////////////////////////////////////////////////////////////////////
-//Função de Inserção Avançada de alunos
+//Função de Inserção Avançada de posts
 void inserirAvancado()
 {
     char simNao, numstr[10];
     int tamanho1=0, tamanho2, offset, offset2, offset3, offset4, comparador, valor;
 
     system("clear");
-    printf("          Gerenciamento da Disciplina          ");
     printf("\n               Insercao Avancada                ");
 
 
     //Inserção dos dados na estrutura
-    printf("\n\nRA: "); gets(numstr); aluno.RA = atoi(numstr);
-    printf("Nome: "); gets(aluno.nome);
-    printf("Sobrenome: "); gets(aluno.sobrenome);
-    printf("\nDeseja inserir as notas? [S/N] ");
-    simNao = getchar();
-    simNao = toupper(simNao);
-    getchar();
+    printf("\n\nID: "); fgets(numstr, 10, stdin); post.ID = atoi(numstr);
+    printf("Nome: "); fgets(post.user, 30, stdin);
+    printf("Sobreuser: "); fgets(post.text, 30, stdin);
+    //printf("\nDeseja inserir as notas? [S/N] ");
+    //simNao = getchar();
+    //simNao = toupper(simNao);
+    //getchar();
 
-    if (simNao != 'S')
-    {
-        aluno.nota1 = 0.0;
-        aluno.nota2 = 0.0;
-        aluno.nota3 = 0.0;
-    } else {
-        printf("\nNota 1: "); gets(numstr); aluno.nota1 = atof(numstr);
-        printf("Nota 2: "); gets(numstr); aluno.nota2 = atof(numstr);
-        printf("Nota 3: "); gets(numstr); aluno.nota3 = atof(numstr);
-    }
+    //if (simNao != 'S')
+    //{
+    //    post.nota1 = 0.0;
+    //    post.nota2 = 0.0;
+    //    post.nota3 = 0.0;
+    //} else {
+    //    printf("\nNota 1: "); fgets(numstr, 10, stdin); post.nota1 = atof(numstr);
+    //    printf("Nota 2: "); fgets(numstr, 10, stdin); post.nota2 = atof(numstr);
+    //    printf("Nota 3: "); fgets(numstr, 10, stdin); post.nota3 = atof(numstr);
+    //}
     //--------------------
 
     //Verificar tamanho do novo registro
-    itoa(aluno.RA,numstr,10); tamanho1 = tamanho1 + strlen(numstr) + 1;
-    tamanho1 = tamanho1 + strlen(aluno.nome) + 1;
-    tamanho1 = tamanho1 + strlen(aluno.sobrenome) + 1;
-    sprintf(numstr, "%2.2f", aluno.nota1); tamanho1 = tamanho1 + strlen(numstr) + 1;
-    sprintf(numstr, "%2.2f", aluno.nota2); tamanho1 = tamanho1 + strlen(numstr) + 1;
-    sprintf(numstr, "%2.2f", aluno.nota3); tamanho1 = tamanho1 + strlen(numstr) + 1;
+    itoa(post.ID,numstr,10); tamanho1 = tamanho1 + strlen(numstr) + 1;
+    tamanho1 = tamanho1 + strlen(post.user) + 1;
+    tamanho1 = tamanho1 + strlen(post.text) + 1;
+    //sprintf(numstr, "%2.2f", post.nota1); tamanho1 = tamanho1 + strlen(numstr) + 1;
+    //sprintf(numstr, "%2.2f", post.nota2); tamanho1 = tamanho1 + strlen(numstr) + 1;
+    //sprintf(numstr, "%2.2f", post.nota3); tamanho1 = tamanho1 + strlen(numstr) + 1;
 
     //Inserção do novo Registro
     rewind(OUT);
@@ -880,14 +877,14 @@ void inserirAvancado()
         fseek(OUT, 0, 2);
         putc(tamanho1, OUT);
         //salvando registro no arquivo de indice primario
-        vetIndice[contIndice].chaveRA = aluno.RA;
+        vetIndice[contIndice].chaveID = post.ID;
         vetIndice[contIndice].posicReg = ftell(OUT);
         contIndice ++;
         //--------------------
 
         //salvando registro no arquivo de indice secundario
         for(int k = 0; k < contIndiceSec + 1; k++) { //verifico se a chave já existe
-            comparador = strcmp(aluno.nome, vetIndiceSec[k].nomeSec);
+            comparador = strcmp(post.user, vetIndiceSec[k].userSec);
             if (comparador == 0) {
                 offset3 = vetIndiceSec[k].posicSec;
                 break;
@@ -897,7 +894,7 @@ void inserirAvancado()
         if (comparador == 0) {
             fseek(LIST_INVERT, 0, 2);
             offset4 = ftell(LIST_INVERT);
-            fwrite(&aluno.RA, sizeof(int), 1, LIST_INVERT);
+            fwrite(&post.ID, sizeof(int), 1, LIST_INVERT);
             valor = -1;
             fwrite(&valor, sizeof(int), 1, LIST_INVERT);
 
@@ -915,16 +912,17 @@ void inserirAvancado()
         } else {
             fseek(LIST_INVERT, 0, 2);
             offset4 = ftell(LIST_INVERT);
-            fwrite(&aluno.RA, sizeof(int), 1, LIST_INVERT);
+            fwrite(&post.ID, sizeof(int), 1, LIST_INVERT);
             valor = -1;
             fwrite(&valor, sizeof(int), 1, LIST_INVERT);
-            strcpy(vetIndiceSec[contIndiceSec].nomeSec, aluno.nome);
+            strcpy(vetIndiceSec[contIndiceSec].userSec, post.user);
             vetIndiceSec[contIndiceSec].posicSec = offset4;
             contIndiceSec++;
         }
         //--------------------
 
-        fprintf(OUT, "%d#%s#%s#%2.2f#%2.2f#%2.2f#", aluno.RA, aluno.nome, aluno.sobrenome, aluno.nota1, aluno.nota2, aluno.nota3);
+        //fprintf(OUT, "%d#%s#%s#%2.2f#%2.2f#%2.2f#", post.ID, post.user, post.text, post.nota1, post.nota2, post.nota3);
+        fprintf(OUT, "%d#%s#%s", post.ID, post.user, post.text);
     } else {
         fseek(OUT, offset, 0);
         tamanho2 = getc(OUT);
@@ -942,14 +940,14 @@ void inserirAvancado()
             fseek(OUT, 0, 2);
             putc(tamanho1, OUT);
             //salvando registro no arquivo de indice primario
-            vetIndice[contIndice].chaveRA = aluno.RA;
+            vetIndice[contIndice].chaveID = post.ID;
             vetIndice[contIndice].posicReg = ftell(OUT);
             contIndice ++;
             //--------------------
 
             //salvando registro no arquivo de indice secundario
             for(int k = 0; k < contIndiceSec + 1; k++) { //verifico se a chave já existe
-                comparador = strcmp(aluno.nome, vetIndiceSec[k].nomeSec);
+                comparador = strcmp(post.user, vetIndiceSec[k].userSec);
                 if (comparador == 0) {
                     offset3 = vetIndiceSec[k].posicSec;
                     break;
@@ -959,7 +957,7 @@ void inserirAvancado()
             if (comparador == 0) {
                 fseek(LIST_INVERT, 0, 2);
                 offset4 = ftell(LIST_INVERT);
-                fwrite(&aluno.RA, sizeof(int), 1, LIST_INVERT);
+                fwrite(&post.ID, sizeof(int), 1, LIST_INVERT);
                 valor = -1;
                 fwrite(&valor, sizeof(int), 1, LIST_INVERT);
 
@@ -977,16 +975,17 @@ void inserirAvancado()
             } else {
                 fseek(LIST_INVERT, 0, 2);
                 offset4 = ftell(LIST_INVERT);
-                fwrite(&aluno.RA, sizeof(int), 1, LIST_INVERT);
+                fwrite(&post.ID, sizeof(int), 1, LIST_INVERT);
                 valor = -1;
                 fwrite(&valor, sizeof(int), 1, LIST_INVERT);
-                strcpy(vetIndiceSec[contIndiceSec].nomeSec, aluno.nome);
+                strcpy(vetIndiceSec[contIndiceSec].userSec, post.user);
                 vetIndiceSec[contIndiceSec].posicSec = offset4;
                 contIndiceSec++;
             }
             //--------------------
 
-            fprintf(OUT, "%d#%s#%s#%2.2f#%2.2f#%2.2f#", aluno.RA, aluno.nome, aluno.sobrenome, aluno.nota1, aluno.nota2, aluno.nota3);
+            //fprintf(OUT, "%d#%s#%s#%2.2f#%2.2f#%2.2f#", post.ID, post.user, post.text, post.nota1, post.nota2, post.nota3);
+            fprintf(OUT, "%d#%s#%s", post.ID, post.user, post.text);
         } else {
             if (tamanho2 == tamanho1) {
                 fseek(OUT, 1, 1);
@@ -994,14 +993,14 @@ void inserirAvancado()
                 fseek(OUT, -(sizeof(int)+2), 1);
                 putc(tamanho1, OUT);
                 //salvando registro no arquivo de indice primario
-                vetIndice[contIndice].chaveRA = aluno.RA;
+                vetIndice[contIndice].chaveID = post.ID;
                 vetIndice[contIndice].posicReg = ftell(OUT);
                 contIndice ++;
                 //--------------------
 
                 //salvando registro no arquivo de indice secundario
                 for(int k = 0; k < contIndiceSec + 1; k++) { //verifico se a chave já existe
-                    comparador = strcmp(aluno.nome, vetIndiceSec[k].nomeSec);
+                    comparador = strcmp(post.user, vetIndiceSec[k].userSec);
                     if (comparador == 0) {
                         offset3 = vetIndiceSec[k].posicSec;
                         break;
@@ -1011,7 +1010,7 @@ void inserirAvancado()
                 if (comparador == 0) {
                     fseek(LIST_INVERT, 0, 2);
                     offset4 = ftell(LIST_INVERT);
-                    fwrite(&aluno.RA, sizeof(int), 1, LIST_INVERT);
+                    fwrite(&post.ID, sizeof(int), 1, LIST_INVERT);
                     valor = -1;
                     fwrite(&valor, sizeof(int), 1, LIST_INVERT);
 
@@ -1029,17 +1028,17 @@ void inserirAvancado()
                 } else {
                     fseek(LIST_INVERT, 0, 2);
                     offset4 = ftell(LIST_INVERT);
-                    fwrite(&aluno.RA, sizeof(int), 1, LIST_INVERT);
+                    fwrite(&post.ID, sizeof(int), 1, LIST_INVERT);
                     valor = -1;
                     fwrite(&valor, sizeof(int), 1, LIST_INVERT);
-                    strcpy(vetIndiceSec[contIndiceSec].nomeSec, aluno.nome);
+                    strcpy(vetIndiceSec[contIndiceSec].userSec, post.user);
                     vetIndiceSec[contIndiceSec].posicSec = offset4;
                     contIndiceSec++;
                 }
                 //--------------------
 
 
-                fprintf(OUT, "%d#%s#%s#%2.2f#%2.2f#%2.2f#", aluno.RA, aluno.nome, aluno.sobrenome, aluno.nota1, aluno.nota2, aluno.nota3);
+                fprintf(OUT, "%d#%s#%s", post.ID, post.user, post.text);
                 fseek(OUT, offset2, 0);
                 fwrite(&offset, sizeof(int), 1, OUT);
             }
@@ -1049,14 +1048,14 @@ void inserirAvancado()
                 fseek(OUT, -(sizeof(int)+2), 1);
                 putc(tamanho1, OUT);
                 //salvando registro no arquivo de indice primario
-                vetIndice[contIndice].chaveRA = aluno.RA;
+                vetIndice[contIndice].chaveID = post.ID;
                 vetIndice[contIndice].posicReg = ftell(OUT);
                 contIndice ++;
                 //--------------------
 
                 //salvando registro no arquivo de indice secundario
                 for(int k = 0; k < contIndiceSec + 1; k++) { //verifico se a chave já existe
-                    comparador = strcmp(aluno.nome, vetIndiceSec[k].nomeSec);
+                    comparador = strcmp(post.user, vetIndiceSec[k].userSec);
                     if (comparador == 0) {
                         offset3 = vetIndiceSec[k].posicSec;
                         break;
@@ -1066,7 +1065,7 @@ void inserirAvancado()
                 if (comparador == 0) {
                     fseek(LIST_INVERT, 0, 2);
                     offset4 = ftell(LIST_INVERT);
-                    fwrite(&aluno.RA, sizeof(int), 1, LIST_INVERT);
+                    fwrite(&post.ID, sizeof(int), 1, LIST_INVERT);
                     valor = -1;
                     fwrite(&valor, sizeof(int), 1, LIST_INVERT);
 
@@ -1084,16 +1083,16 @@ void inserirAvancado()
                 } else {
                     fseek(LIST_INVERT, 0, 2);
                     offset4 = ftell(LIST_INVERT);
-                    fwrite(&aluno.RA, sizeof(int), 1, LIST_INVERT);
+                    fwrite(&post.ID, sizeof(int), 1, LIST_INVERT);
                     valor = -1;
                     fwrite(&valor, sizeof(int), 1, LIST_INVERT);
-                    strcpy(vetIndiceSec[contIndiceSec].nomeSec, aluno.nome);
+                    strcpy(vetIndiceSec[contIndiceSec].userSec, post.user);
                     vetIndiceSec[contIndiceSec].posicSec = offset4;
                     contIndiceSec++;
                 }
                 //--------------------
 
-                fprintf(OUT, "%d#%s#%s#%2.2f#%2.2f#%2.2f#", aluno.RA, aluno.nome, aluno.sobrenome, aluno.nota1, aluno.nota2, aluno.nota3);
+                fprintf(OUT, "%d#%s#%s", post.ID, post.user, post.text);
 
                 tamanho2 = tamanho2 - tamanho1;
                 if (tamanho2 < 6) {
@@ -1125,20 +1124,19 @@ void inserirAvancado()
 //Função para Remoção de um registro
 void remover()
 {
-    int removaRA1, removaRA2, tamRegistro, tamRegistro2, i, offset1, offset2;
+    int removaID1, removaID2, tamRegistro, tamRegistro2, i, offset1, offset2;
     char carac, numstr[10];
 
     system("clear");
-    printf("          Gerenciamento da Disciplina          ");
     printf("\n                    Remocao                   ");
 
-    printf("\n\nInsira o RA para remocao: "); gets(numstr); removaRA1 = atoi(numstr);
+    printf("\n\nInsira o ID para remocao: "); fgets(numstr, 10, stdin); removaID1 = atoi(numstr);
 
-    //Pesquisa do RA para ser removido
+    //Pesquisa do ID para ser removido
     fseek(OUT, 5, 0);
-    removaRA2 = 0;
+    removaID2 = 0;
     tamRegistro = getc(OUT);
-    while((removaRA1 != removaRA2) && (tamRegistro != EOF))
+    while((removaID1 != removaID2) && (tamRegistro != EOF))
     {
         memset(numstr, '\0', sizeof(numstr));
         tamRegistro2 = tamRegistro;
@@ -1150,17 +1148,17 @@ void remover()
             i++;
             carac = getc(OUT);
         }
-        removaRA2 = atoi(numstr);
+        removaID2 = atoi(numstr);
         fseek(OUT, (tamRegistro-(i+1)), 1);
         tamRegistro = getc(OUT);
     }
     //--------------------
 
     //Removendo dados - Colocando informações no registro removido
-    if ((removaRA1 != removaRA2) && (tamRegistro == -1)) {
-        printf("\nRA inexistente. Tente novamente.");
+    if ((removaID1 != removaID2) && (tamRegistro == -1)) {
+        printf("\nID inexistente. Tente novamente.");
     } else {
-        if ((removaRA1 == removaRA2) && (tamRegistro == -1)) {
+        if ((removaID1 == removaID2) && (tamRegistro == -1)) {
             fseek(OUT, -((tamRegistro2)+1), 1);
         } else {
             fseek(OUT, -((tamRegistro2)+2), 1);
@@ -1187,11 +1185,11 @@ void remover()
 
         //deletar registro do arquivo de indices
         i = 0;
-        while(removaRA1 != vetIndice[i].chaveRA)
+        while(removaID1 != vetIndice[i].chaveID)
         {
             i++;
         }
-        vetIndice[i].chaveRA = 0;
+        vetIndice[i].chaveID = 0;
         vetIndice[i].posicReg = 0;
 
     }
@@ -1225,24 +1223,24 @@ void escritor()
 
 
 ////////////////////////////////////////////////////////////////////////////////
-//Função de Pesquisa de alunos
+//Função de Pesquisa de posts
 void pesquisar()
 {
-    float nota1, nota2, nota3, media;
-    int pesquisaRA1, pesquisaRA2, tamRegistro, tamRegistro2, i;
+    //float nota1, nota2, nota3, media;
+    int pesquisaID1, pesquisaID2, tamRegistro, tamRegistro2, i;
     char carac, numstr[10];
 
     system("clear");
     printf("          Gerenciamento da Disciplina          ");
     printf("\n                    Pesquisa                   ");
 
-    printf("\n\nInsira o RA para pesquisa: "); gets(numstr); pesquisaRA1 = atoi(numstr);
+    printf("\n\nInsira o ID para pesquisa: "); fgets(numstr, 10, stdin); pesquisaID1 = atoi(numstr);
 
-    //Pesquisa do RA
+    //Pesquisa do ID
     fseek(OUT, 5, 0);
-    pesquisaRA2 = 0;
+    pesquisaID2 = 0;
     tamRegistro = getc(OUT);
-    while((pesquisaRA1 != pesquisaRA2) && (tamRegistro != EOF))
+    while((pesquisaID1 != pesquisaID2) && (tamRegistro != EOF))
     {
         memset(numstr, '\0', sizeof(numstr));
         tamRegistro2 = tamRegistro;
@@ -1254,59 +1252,59 @@ void pesquisar()
             i++;
             carac = getc(OUT);
         }
-        pesquisaRA2 = atoi(numstr);
+        pesquisaID2 = atoi(numstr);
         fseek(OUT, (tamRegistro-(i+1)), 1);
         tamRegistro = getc(OUT);
     }
     //--------------------
 
     //Escrita referente aos dados obtidos
-    if ((pesquisaRA1 != pesquisaRA2) && (tamRegistro == -1)) {
-        printf("\nRA inexistente. Procure novamente.");
+    if ((pesquisaID1 != pesquisaID2) && (tamRegistro == -1)) {
+        printf("\nID inexistente. Procure novamente.");
     } else {
-        if ((pesquisaRA1 == pesquisaRA2) && (tamRegistro == -1)) {
+        if ((pesquisaID1 == pesquisaID2) && (tamRegistro == -1)) {
             fseek(OUT, -(tamRegistro2), 1);
         } else {
             fseek(OUT, -(tamRegistro2+1), 1);
         }
 
-        printf("\n\nRA: "); escritor();
+        printf("\n\nID: "); escritor();
         printf("\nNome: "); escritor();
-        printf("\nSobrenome: "); escritor();
+        printf("\nSobreuser: "); escritor();
 
-        //Escrita das notas e da media
-        printf("\nNota 1: ");
-        i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
-        while((carac != '#') && (carac != EOF))
-        {
-            numstr[i] = carac; i++;
-            printf("%c", carac);
-            carac = fgetc(OUT);
-        }
-        nota1 = atof(numstr);
+        ////Escrita das notas e da media
+        //printf("\nNota 1: ");
+        //i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
+        //while((carac != '#') && (carac != EOF))
+        //{
+        //    numstr[i] = carac; i++;
+        //    printf("%c", carac);
+        //    carac = fgetc(OUT);
+        //}
+        //nota1 = atof(numstr);
 
-        printf("\nNota 2: ");
-        i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
-        while((carac != '#') && (carac != EOF))
-        {
-            numstr[i] = carac; i++;
-            printf("%c", carac);
-            carac = fgetc(OUT);
-        }
-        nota2 = atof(numstr);
+        //printf("\nNota 2: ");
+        //i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
+        //while((carac != '#') && (carac != EOF))
+        //{
+        //    numstr[i] = carac; i++;
+        //    printf("%c", carac);
+        //    carac = fgetc(OUT);
+        //}
+        //nota2 = atof(numstr);
 
-        printf("\nNota 3: ");
-        i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
-        while((carac != '#') && (carac != EOF))
-        {
-            numstr[i] = carac; i++;
-            printf("%c", carac);
-            carac = fgetc(OUT);
-        }
-        nota3 = atof(numstr);
+        //printf("\nNota 3: ");
+        //i=0; carac = fgetc(OUT); memset(numstr, '\0', sizeof(numstr));
+        //while((carac != '#') && (carac != EOF))
+        //{
+        //    numstr[i] = carac; i++;
+        //    printf("%c", carac);
+        //    carac = fgetc(OUT);
+        //}
+        //nota3 = atof(numstr);
 
-        media = ((nota1 + nota2 + nota3)/3);
-        printf("\nMedia: %2.2f", media);
+        //media = ((nota1 + nota2 + nota3)/3);
+        //printf("\nMedia: %2.2f", media);
 
     }
     //--------------------
@@ -1320,7 +1318,7 @@ void pesquisar()
 
 
 ////////////////////////////////////////////////////////////////////////////////
-//Função de Inserção Simples de alunos
+//Função de Inserção Simples de posts
 void inserir()
 {
     char simNao, numstr[10];
@@ -1332,44 +1330,44 @@ void inserir()
 
 
     //Inserção dos dados na estrutura
-    printf("\n\nRA: "); gets(numstr); aluno.RA = atoi(numstr);
-    printf("Nome: "); gets(aluno.nome);
-    printf("Sobrenome: "); gets(aluno.sobrenome);
-    printf("\nDeseja inserir as notas? [S/N] ");
-    simNao = getchar();
-    simNao = toupper(simNao);
-    getchar();
+    printf("\n\nID: "); fgets(numstr, 10, stdin); post.ID = atoi(numstr);
+    printf("Nome: "); fgets(post.user, 30, stdin);
+    printf("Sobreuser: "); fgets(post.text, 30, stdin);
+    //printf("\nDeseja inserir as notas? [S/N] ");
+    //simNao = getchar();
+    //simNao = toupper(simNao);
+    //getchar();
 
-    if (simNao != 'S')
-    {
-        aluno.nota1 = 0.0;
-        aluno.nota2 = 0.0;
-        aluno.nota3 = 0.0;
-    } else {
-        printf("\nNota 1: "); gets(numstr); aluno.nota1 = atof(numstr);
-        printf("Nota 2: "); gets(numstr); aluno.nota2 = atof(numstr);
-        printf("Nota 3: "); gets(numstr); aluno.nota3 = atof(numstr);
-    }
+    //if (simNao != 'S')
+    //{
+    //    post.nota1 = 0.0;
+    //    post.nota2 = 0.0;
+    //    post.nota3 = 0.0;
+    //} else {
+    //    printf("\nNota 1: "); fgets(numstr, 10, stdin); post.nota1 = atof(numstr);
+    //    printf("Nota 2: "); fgets(numstr, 10, stdin); post.nota2 = atof(numstr);
+    //    printf("Nota 3: "); fgets(numstr, 10, stdin); post.nota3 = atof(numstr);
+    //}
     //--------------------
 
     //Gravação no arquivo
     fseek(OUT, 0, 2);
-    itoa(aluno.RA,numstr,10); tamanho = tamanho + strlen(numstr) + 1;
-    tamanho = tamanho + strlen(aluno.nome) + 1;
-    tamanho = tamanho + strlen(aluno.sobrenome) + 1;
-    sprintf(numstr, "%2.2f", aluno.nota1); tamanho = tamanho + strlen(numstr) + 1;
-    sprintf(numstr, "%2.2f", aluno.nota2); tamanho = tamanho + strlen(numstr) + 1;
-    sprintf(numstr, "%2.2f", aluno.nota3); tamanho = tamanho + strlen(numstr) + 1;
+    itoa(post.ID,numstr,10); tamanho = tamanho + strlen(numstr) + 1;
+    tamanho = tamanho + strlen(post.user) + 1;
+    tamanho = tamanho + strlen(post.text) + 1;
+    //sprintf(numstr, "%2.2f", post.nota1); tamanho = tamanho + strlen(numstr) + 1;
+    //sprintf(numstr, "%2.2f", post.nota2); tamanho = tamanho + strlen(numstr) + 1;
+    //sprintf(numstr, "%2.2f", post.nota3); tamanho = tamanho + strlen(numstr) + 1;
     putc(tamanho, OUT);
     //salvando registro no arquivo de indice primario
-    vetIndice[contIndice].chaveRA = aluno.RA;
+    vetIndice[contIndice].chaveID = post.ID;
     vetIndice[contIndice].posicReg = ftell(OUT);
     contIndice ++;
     //--------------------
 
     //salvando registro no arquivo de indice secundario
     for(int k = 0; k < contIndiceSec + 1; k++) { //verifico se a chave já existe
-        comparador = strcmp(aluno.nome, vetIndiceSec[k].nomeSec);
+        comparador = strcmp(post.user, vetIndiceSec[k].userSec);
         if (comparador == 0) {
             offset = vetIndiceSec[k].posicSec;
             break;
@@ -1379,7 +1377,7 @@ void inserir()
     if (comparador == 0) {
         fseek(LIST_INVERT, 0, 2);
         offset2 = ftell(LIST_INVERT);
-        fwrite(&aluno.RA, sizeof(int), 1, LIST_INVERT);
+        fwrite(&post.ID, sizeof(int), 1, LIST_INVERT);
         valor = -1;
         fwrite(&valor, sizeof(int), 1, LIST_INVERT);
 
@@ -1397,17 +1395,18 @@ void inserir()
     } else {
         fseek(LIST_INVERT, 0, 2);
         offset2 = ftell(LIST_INVERT);
-        fwrite(&aluno.RA, sizeof(int), 1, LIST_INVERT);
+        fwrite(&post.ID, sizeof(int), 1, LIST_INVERT);
         valor = -1;
         fwrite(&valor, sizeof(int), 1, LIST_INVERT);
-        strcpy(vetIndiceSec[contIndiceSec].nomeSec, aluno.nome);
+        strcpy(vetIndiceSec[contIndiceSec].userSec, post.user);
         vetIndiceSec[contIndiceSec].posicSec = offset2;
         contIndiceSec++;
     }
     //--------------------
 
 
-    fprintf(OUT, "%d#%s#%s#%2.2f#%2.2f#%2.2f#", aluno.RA, aluno.nome, aluno.sobrenome, aluno.nota1, aluno.nota2, aluno.nota3);
+    //fprintf(OUT, "%d#%s#%s#%2.2f#%2.2f#%2.2f#", post.ID, post.user, post.text, post.nota1, post.nota2, post.nota3);
+    fprintf(OUT, "%d#%s#%s", post.ID, post.user, post.text);
     //-------------------
 
     getchar();
@@ -1427,14 +1426,14 @@ void menu()
     do {
         system("clear");
         printf("          Gerenciamento da Disciplina          ");
-        printf("\n\n1. Inserir aluno (Modo Simples)");
-        printf("\n2. Inserir aluno (Modo Avancado)");
-        printf("\n3. Alterar dados aluno");
-        printf("\n4. Remover aluno");
-        printf("\n5. Pesquisar aluno (Modo Basico)");
+        printf("\n\n1. Inserir post (Modo Simples)");
+        printf("\n2. Inserir post (Modo Avancado)");
+        printf("\n3. Alterar dados post");
+        printf("\n4. Remover post");
+        printf("\n5. Pesquisar post (Modo Basico)");
         printf("\n6. Compactar");
-        printf("\n7. Pesquisa aluno (Chave Primaria)");
-        printf("\n8. Pesquisa aluno (Chave Secundaria)");
+        printf("\n7. Pesquisa post (Chave Primaria)");
+        printf("\n8. Pesquisa post (Chave Secundaria)");
         printf("\n0. Sair");
         printf("\n\nOpcao: "); op = getchar();
         getchar();
